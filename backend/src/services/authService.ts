@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import { AppError } from '../utils/AppError.js';
-import type { RegisterRequest, LoginRequest, LoginResponse, PublicUser } from '@shared/types.js';
+import type { RegisterRequest, LoginRequest, LoginResponse, PublicUser } from '../types/shared.js';
 
 export async function registerUser(data: RegisterRequest): Promise<PublicUser> {
   const { name, email, password } = data;

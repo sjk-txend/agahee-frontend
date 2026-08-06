@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import * as authService from '../services/authService.js';
-import type { RegisterRequest, LoginRequest, LoginResponse, PublicUser, ApiError } from '@shared/types.js';
+import type { RegisterRequest, LoginRequest, LoginResponse, PublicUser, ApiError } from '../types/shared.js';
 
 export async function register(
   req: Request<{}, {}, RegisterRequest>,
