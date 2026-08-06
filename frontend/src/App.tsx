@@ -5,9 +5,10 @@ import LoginPage from './pages/LoginPage'
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<div>Landing page (Ali's work)</div>} />
+      <Route path="/" element={<div>Landing page</div>} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
+      <Route path="/dashboard" element={<div>Dashboard</div>} />
     </Routes>
   )
 }
