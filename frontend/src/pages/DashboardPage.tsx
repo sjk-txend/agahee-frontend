@@ -3,6 +3,7 @@ import Avatar from '../components/Avatar'
 import SearchBar from '../components/SearchBar'
 import ConversationList from '../components/ConversationList'
 import NewChatModal from '../components/NewChatModal'
+import MessageBox from '../components/MessageBox'
 
 function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -37,15 +38,7 @@ function DashboardPage() {
 
       {/* Main chat panel */}
       <div className="flex-1 flex flex-col">
-        {activeConversationId ? (
-          <div className="flex-1 flex items-center justify-center text-slate-400">
-            Chat with conversation ID: {activeConversationId}
-          </div>
-        ) : (
-          <div className="flex-1 flex items-center justify-center text-slate-400">
-            Select a conversation to start chatting
-          </div>
-        )}
+        <MessageBox conversationId={activeConversationId} />
       </div>
 
       {isNewChatOpen && (
