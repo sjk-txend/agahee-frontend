@@ -5,6 +5,7 @@ import ConversationList from '../components/ConversationList'
 
 function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState('')
+  const [activeConversationId, setActiveConversationId] = useState<string | null>(null)
 
   return (
     <div className="h-screen flex bg-slate-100">
@@ -16,16 +17,27 @@ function DashboardPage() {
         </div>
         <SearchBar value={searchTerm} onChange={setSearchTerm} />
         <div className="flex-1 overflow-y-auto">
-          <ConversationList searchTerm={searchTerm} />
+          <ConversationList
+            searchTerm={searchTerm}
+            activeConversationId={activeConversationId}
+            onSelect={setActiveConversationId}
+        />
         </div>
       </div>
 
+    
       {/* Main chat panel */}
-      <div className="flex-1 flex flex-col">
-        <div className="flex-1 flex items-center justify-center text-slate-400">
-          Select a conversation to start chatting
-        </div>
-      </div>
+<div className="flex-1 flex flex-col">
+  {activeConversationId ? (
+    <div className="flex-1 flex items-center justify-center text-slate-400">
+      Chat with conversation ID: {activeConversationId} (messages coming next)
+    </div>
+  ) : (
+    <div className="flex-1 flex items-center justify-center text-slate-400">
+      Select a conversation to start chatting
+    </div>
+  )}
+</div>
     </div>
   )
 }

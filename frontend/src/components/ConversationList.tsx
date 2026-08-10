@@ -3,9 +3,11 @@ import { mockConversations } from '../data/mockConversations'
 
 interface ConversationListProps {
   searchTerm: string
+  activeConversationId: string | null
+  onSelect: (id: string) => void
 }
 
-function ConversationList({ searchTerm }: ConversationListProps) {
+function ConversationList({ searchTerm, activeConversationId, onSelect }: ConversationListProps) {
   const filtered = mockConversations.filter((conversation) =>
     conversation.userName.toLowerCase().includes(searchTerm.toLowerCase())
   )
@@ -19,7 +21,10 @@ function ConversationList({ searchTerm }: ConversationListProps) {
       {filtered.map((conversation) => (
         <button
           key={conversation.id}
-          className="flex items-center gap-3 p-3 hover:bg-slate-50 text-left border-b border-slate-100"
+          onClick={() => onSelect(conversation.id)}
+          className={`flex items-center gap-3 p-3 text-left border-b border-slate-100 ${
+            activeConversationId === conversation.id ? 'bg-blue-50' : 'hover:bg-slate-50'
+          }`}
         >
           <Avatar name={conversation.userName} />
 
