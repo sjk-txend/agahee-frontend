@@ -126,7 +126,12 @@ function MessageBox({ conversationId }: MessageBoxProps) {
             >
               <Avatar name={conversation.userName} size="md" />
             </button>
+            <div className="flex flex-col">
             <div className="font-medium text-slate-800">{conversation.userName}</div>
+            <div className={`text-xs ${conversation.isOnline ? 'text-green-500' : 'text-slate-400'}`}>
+               {conversation.isOnline ? 'Online' : 'Offline'}
+             </div>
+          </div>
           </div>
           <button
             type="button"
