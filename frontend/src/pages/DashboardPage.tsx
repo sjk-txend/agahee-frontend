@@ -32,6 +32,7 @@ function DashboardPage() {
         unreadCount: 0,
         isMuted: false,
         isDeleted: false,
+        isOnline: false,
       }
       setConversations([newConversation, ...conversations])
     }
