@@ -7,6 +7,7 @@ import ConfirmDialog from '../components/ConfirmDialog'
 import Toast from '../components/Toast'
 import { mockConversations, type Conversation } from '../data/mockConversations'
 import { mockUsers } from '../data/mockUsers'
+import MessageBox from '../components/MessageBox'
 
 function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState('')
@@ -87,17 +88,8 @@ function DashboardPage() {
       </div>
 
       {/* Main chat panel */}
-      <div className="flex-1 flex flex-col">
-        {activeConversationId ? (
-          <div className="flex-1 flex items-center justify-center text-slate-400">
-            Chat with conversation ID: {activeConversationId}
-          </div>
-        ) : (
-          <div className="flex-1 flex items-center justify-center text-slate-400">
-            Select a conversation to start chatting
-          </div>
-        )}
-      </div>
+     
+<MessageBox conversationId={activeConversationId} />
 
       {isNewChatOpen && (
         <NewChatModal
