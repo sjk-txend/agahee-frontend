@@ -1,16 +1,27 @@
 import Avatar from './Avatar'
-import { mockConversations } from '../data/mockConversations'
+import ConversationMenu from './ConversationMenu'
+import type { Conversation } from '../data/mockConversations'
 
 interface ConversationListProps {
   searchTerm: string
   activeConversationId: string | null
   onSelect: (id: string) => void
+  conversations: Conversation[]
+  onDelete: (id: string) => void
+  onToggleMute: (id: string) => void
 }
 
-function ConversationList({ searchTerm, activeConversationId, onSelect }: ConversationListProps) {
-  const filtered = mockConversations.filter((conversation) =>
-    conversation.userName.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+function ConversationList({
+  searchTerm,
+  activeConversationId,
+  onSelect,
+  conversations,
+  onDelete,
+  onToggleMute,
+}: ConversationListProps) {
+  const filtered = conversations
+    .filter((c) => !c.isDeleted)
+    .filter((c) => c.userName.toLowerCase().includes(searchTerm.toLowerCase()))
 
   return (
     <div className="flex flex-col">
@@ -19,10 +30,10 @@ function ConversationList({ searchTerm, activeConversationId, onSelect }: Conver
       )}
 
       {filtered.map((conversation) => (
-        <button
+        <div
           key={conversation.id}
           onClick={() => onSelect(conversation.id)}
-          className={`flex items-center gap-3 p-3 text-left border-b border-slate-100 ${
+          className={`flex items-center gap-3 p-3 cursor-pointer border-b border-slate-100 ${
             activeConversationId === conversation.id ? 'bg-blue-50' : 'hover:bg-slate-50'
           }`}
         >
@@ -32,6 +43,7 @@ function ConversationList({ searchTerm, activeConversationId, onSelect }: Conver
             <div className="flex justify-between items-baseline">
               <span className="font-medium text-slate-800 truncate">
                 {conversation.userName}
+                {conversation.isMuted && <span className="ml-1 text-slate-400">🔇</span>}
               </span>
               <span className="text-xs text-slate-400 shrink-0 ml-2">
                 {conversation.timestamp}
@@ -45,7 +57,13 @@ function ConversationList({ searchTerm, activeConversationId, onSelect }: Conver
               {conversation.unreadCount}
             </span>
           )}
-        </button>
+
+          <ConversationMenu
+            isMuted={conversation.isMuted}
+            onDelete={() => onDelete(conversation.id)}
+            onToggleMute={() => onToggleMute(conversation.id)}
+          />
+        </div>
       ))}
     </div>
   )

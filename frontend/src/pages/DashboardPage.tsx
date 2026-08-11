@@ -3,11 +3,59 @@ import Avatar from '../components/Avatar'
 import SearchBar from '../components/SearchBar'
 import ConversationList from '../components/ConversationList'
 import NewChatModal from '../components/NewChatModal'
+import ConfirmDialog from '../components/ConfirmDialog'
+import Toast from '../components/Toast'
+import { mockConversations, type Conversation } from '../data/mockConversations'
+import { mockUsers } from '../data/mockUsers'
 
 function DashboardPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [activeConversationId, setActiveConversationId] = useState<string | null>(null)
   const [isNewChatOpen, setIsNewChatOpen] = useState(false)
+  const [conversations, setConversations] = useState<Conversation[]>(mockConversations)
+  const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null)
+  const [toastMessage, setToastMessage] = useState('')
+
+  function handleSelectNewUser(userId: string) {
+    const existing = conversations.find((c) => c.id === userId)
+
+    if (!existing) {
+      const user = mockUsers.find((u) => u.id === userId)
+      if (!user) return
+
+      const newConversation: Conversation = {
+        id: user.id,
+        userName: user.name,
+        lastMessage: '',
+        timestamp: 'Now',
+        unreadCount: 0,
+        isMuted: false,
+        isDeleted: false,
+      }
+      setConversations([newConversation, ...conversations])
+    }
+
+    setActiveConversationId(userId)
+    setIsNewChatOpen(false)
+  }
+
+  function handleToggleMute(id: string) {
+    setConversations((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, isMuted: !c.isMuted } : c))
+    )
+  }
+
+  function confirmDelete() {
+    if (!pendingDeleteId) return
+    setConversations((prev) =>
+      prev.map((c) => (c.id === pendingDeleteId ? { ...c, isDeleted: true } : c))
+    )
+    if (activeConversationId === pendingDeleteId) {
+      setActiveConversationId(null)
+    }
+    setPendingDeleteId(null)
+    setToastMessage('Conversation deleted')
+  }
 
   return (
     <div className="h-screen flex bg-slate-100">
@@ -22,7 +70,7 @@ function DashboardPage() {
             >
               New Chat
             </button>
-            <Avatar name="Ayaan Shahid" />
+            <Avatar name="Bala Shekhar" />
           </div>
         </div>
         <SearchBar value={searchTerm} onChange={setSearchTerm} />
@@ -31,6 +79,9 @@ function DashboardPage() {
             searchTerm={searchTerm}
             activeConversationId={activeConversationId}
             onSelect={setActiveConversationId}
+            conversations={conversations}
+            onDelete={setPendingDeleteId}
+            onToggleMute={handleToggleMute}
           />
         </div>
       </div>
@@ -51,11 +102,20 @@ function DashboardPage() {
       {isNewChatOpen && (
         <NewChatModal
           onClose={() => setIsNewChatOpen(false)}
-          onSelectUser={(userId) => {
-            console.log('Start chat with user:', userId)
-            setIsNewChatOpen(false)
-          }}
+          onSelectUser={handleSelectNewUser}
         />
+      )}
+
+      {pendingDeleteId && (
+        <ConfirmDialog
+          message="Delete this conversation? This can't be undone from your side."
+          onConfirm={confirmDelete}
+          onCancel={() => setPendingDeleteId(null)}
+        />
+      )}
+
+      {toastMessage && (
+        <Toast message={toastMessage} onClose={() => setToastMessage('')} />
       )}
     </div>
   )
