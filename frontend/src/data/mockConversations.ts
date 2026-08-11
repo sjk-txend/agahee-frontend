@@ -6,6 +6,7 @@ export interface Conversation {
   unreadCount: number
   isMuted: boolean
   isDeleted: boolean
+  isOnline:boolean
 }
 
 export const mockConversations: Conversation[] = [
@@ -17,6 +18,7 @@ export const mockConversations: Conversation[] = [
     unreadCount: 2,
     isMuted: false,
     isDeleted: false,
+    isOnline: true
   },
   {
     id: '2',
@@ -26,6 +28,7 @@ export const mockConversations: Conversation[] = [
     unreadCount: 0,
     isMuted: false,
     isDeleted: false,
+    isOnline: false
   },
   {
     id: '3',
@@ -35,6 +38,7 @@ export const mockConversations: Conversation[] = [
     unreadCount: 0,
     isMuted: false,
     isDeleted: false,
+    isOnline: false
   },
    {
     id: '4',
@@ -44,5 +48,6 @@ export const mockConversations: Conversation[] = [
     unreadCount: 1,
     isMuted: false,
     isDeleted: false,
+    isOnline: true
   },
 ]

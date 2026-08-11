@@ -37,10 +37,13 @@ function ConversationList({
             activeConversationId === conversation.id ? 'bg-blue-50' : 'hover:bg-slate-50'
           }`}
         >
+        <div className="relative">
           <Avatar name={conversation.userName} />
+          <span className={`absolute bottom-0 right-0 w-3 h-3 rounded-full border-2 border-white ${conversation.isOnline ? 'bg-green-500' : 'bg-slate-400'}`} />
+        </div>
 
           <div className="flex-1 min-w-0">
-            <div className="flex justify-between items-baseline">
+            <div className="flex justify-between items-bgit line">
               <span className="font-medium text-slate-800 truncate">
                 {conversation.userName}
                 {conversation.isMuted && <span className="ml-1 text-slate-400">🔇</span>}
